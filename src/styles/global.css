@@ -1,0 +1,214 @@
+@import './content.css';
+@import './editorial.css';
+@import './desktop.css';
+@import './jungsu-home.css';
+@import './jungsu-sections.css';
+
+@font-face {
+	font-family: 'SUIT Local';
+	src: url('/fonts/SUIT-Bold.otf') format('opentype');
+	font-display: swap;
+	font-weight: 700 900;
+}
+
+:root {
+	color-scheme: light;
+	--bg: #f1eadb;
+	--bg-raised: #fffaf0;
+	--card: #fffaf0;
+	--card-soft: rgba(255, 250, 240, 0.88);
+	--text: #17201d;
+	--muted: #5e6762;
+	--line: rgba(23, 32, 29, 0.15);
+	--accent: #0f8f72;
+	--accent-cool: #168eb6;
+	--sun: #f5c84b;
+	--shadow: 0 18px 46px rgba(29, 51, 46, 0.12);
+	--radius: 24px;
+	--title-font: 'SUIT Local', Pretendard, 'Noto Sans KR', sans-serif;
+	--body-font: Pretendard, 'Noto Sans KR', system-ui, sans-serif;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	min-height: 100%;
+	font-family: var(--body-font);
+	background: var(--bg);
+}
+
+body {
+	min-height: 100%;
+	margin: 0;
+	color: var(--text);
+	background: var(--bg);
+}
+
+a {
+	color: inherit;
+	text-decoration-color: rgba(26, 26, 26, 0.28);
+	text-underline-offset: 0.24em;
+	transition:
+		color 160ms ease,
+		border-color 160ms ease,
+		background 160ms ease;
+}
+
+a:hover {
+	color: var(--text);
+}
+
+a:focus-visible {
+	outline: 2px solid var(--text);
+	outline-offset: 4px;
+}
+
+::selection {
+	color: var(--text);
+	background: var(--accent);
+}
+
+.site-shell {
+	width: min(100% - 3rem, 86rem);
+	margin: 0 auto;
+}
+
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	border-bottom: 1px solid var(--line);
+	background: rgba(241, 234, 219, 0.88);
+	backdrop-filter: blur(16px);
+}
+
+.site-header__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.4rem;
+	min-height: 4.5rem;
+}
+
+.brand {
+	font-family: var(--title-font);
+	font-size: 1.02rem;
+	font-weight: 900;
+	letter-spacing: 0.02em;
+	color: var(--text);
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+.site-nav {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 0.3rem;
+}
+
+.site-nav a {
+	padding: 0.48rem 0.72rem;
+	border: 1px solid transparent;
+	border-radius: 999px;
+	color: var(--muted);
+	font-size: 0.92rem;
+	font-weight: 700;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.site-nav a[aria-current='page'],
+.site-nav a:hover {
+	border-color: var(--line);
+	color: var(--text);
+	background: rgba(255, 250, 240, 0.72);
+}
+
+.site-actions {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+.nav-cta {
+	border-radius: 999px;
+	font-size: 0.9rem;
+	font-weight: 800;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.nav-cta {
+	padding: 0.75rem 1rem;
+	color: var(--bg-raised);
+	background: var(--accent);
+}
+
+.site-main {
+	padding: 5.5rem 0 4rem;
+	word-break: keep-all;
+	overflow-wrap: break-word;
+}
+
+.site-main--wide {
+	width: 100%;
+	padding-top: 0;
+}
+
+.site-footer {
+	border-top: 1px solid var(--line);
+	padding: 2rem 0 2.4rem;
+	color: var(--muted);
+}
+
+.site-footer__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.footer-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+}
+
+@media (max-width: 720px) {
+	.site-header__inner {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+	}
+
+	.site-footer__inner {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.site-nav {
+		grid-column: 1 / -1;
+		grid-row: 2;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		overflow-x: visible;
+		padding-bottom: 0.2rem;
+	}
+
+	.site-actions {
+		grid-column: 2;
+		grid-row: 1;
+		justify-content: flex-end;
+	}
+
+	.site-main {
+		padding-top: 4rem;
+	}
+
+	.site-shell {
+		width: min(100% - 2rem, 88rem);
+	}
+}

@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projects = (await getCollection('projects')).sort(
+	(firstProject, secondProject) =>
+		secondProject.data.date.valueOf() - firstProject.data.date.valueOf(),
+);
+const projectStatusLabels: Record<string, string> = {
+	Active: '운영 중',
+	Complete: '완료',
+	Study: '실험 중',
+};
+---
+
+<BaseLayout title="jungsu blog | 프로젝트">
+	<section class="hero">
+		<p class="eyebrow">프로젝트</p>
+		<h1>프로젝트 쇼룸.</h1>
+		<p>직접 만든 사이트, 작은 도구, 워크플로 실험을 쇼룸처럼 모아둡니다.</p>
+	</section>
+
+	<section class="page-section">
+		<div class="section-heading">
+			<h2>프로젝트 목록</h2>
+		</div>
+		<ul class="card-grid">
+			{
+				projects.map((project) => (
+					<li>
+						<a class="content-card" href={`/projects/${project.id}/`}>
+							<h3>{project.data.title}</h3>
+							<p>{project.data.description}</p>
+							<p class="meta">
+								<time datetime={project.data.date.toISOString()}>
+									{project.data.date.toLocaleDateString('ko-KR', {
+										month: 'long',
+										day: 'numeric',
+										year: 'numeric',
+									})}
+								</time>
+								{' · '}
+								{projectStatusLabels[project.data.status] ?? project.data.status}
+							</p>
+							<p class="tags-line">{project.data.stack.join(', ')}</p>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+</BaseLayout>

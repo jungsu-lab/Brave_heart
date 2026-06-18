@@ -1,0 +1,133 @@
+.split-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1.2fr) minmax(17rem, 0.8fr);
+	gap: 1rem;
+	align-items: start;
+}
+
+.note-panel {
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 1.25rem;
+	background: var(--card-soft);
+	box-shadow: var(--shadow);
+}
+
+.note-panel h2,
+.note-panel h3 {
+	margin: 0 0 0.75rem;
+	font-family: var(--title-font);
+}
+
+.note-panel p {
+	margin: 0;
+}
+
+.path-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.path-card {
+	display: block;
+	min-height: 100%;
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 1rem;
+	color: var(--text);
+	background: var(--card-soft);
+	text-decoration: none;
+}
+
+.path-card strong {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-family: var(--title-font);
+	font-size: 1.15rem;
+}
+
+.archive-list {
+	display: grid;
+	gap: 0.65rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.archive-item {
+	display: grid;
+	grid-template-columns: 7.5rem minmax(0, 1fr);
+	gap: 1rem;
+	border-top: 1px solid var(--line);
+	padding-top: 0.85rem;
+}
+
+.archive-item time,
+.archive-item span {
+	color: var(--muted);
+	font-size: 0.9rem;
+}
+
+.archive-item a {
+	font-family: var(--title-font);
+	font-weight: 800;
+	text-decoration: none;
+}
+
+.tag-cloud {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.tag-cloud li {
+	border: 1px solid rgba(26, 26, 26, 0.16);
+	border-radius: 999px;
+	padding: 0.44rem 0.7rem;
+	color: var(--muted);
+	background: rgba(255, 255, 255, 0.56);
+	font-size: 0.88rem;
+}
+
+.back-link {
+	display: inline-flex;
+	margin-bottom: 2rem;
+	color: var(--accent-cool);
+	font-weight: 800;
+	text-decoration: none;
+}
+
+.article-footer {
+	margin-top: 3rem;
+	border-top: 1px solid var(--line);
+	padding-top: 2rem;
+}
+
+.related-list {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem;
+	margin: 1rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (max-width: 820px) {
+	.split-layout,
+	.path-grid,
+	.related-list {
+		grid-template-columns: 1fr;
+	}
+
+	.archive-item {
+		grid-template-columns: 1fr;
+		gap: 0.35rem;
+	}
+}

@@ -1,11 +1,131 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const quickLinks = [
+	['Daily Notes', '그날그날 남긴 생각과 작업의 온도.', '/daily/'],
+	['Study Log', '읽고 실험한 것들을 다시 찾기 쉽게 정리합니다.', '/study/'],
+	['Project Room', '작게 만든 도구와 사이트를 모아두는 쇼룸.', '/projects/'],
+];
+const featureCards = [
+	{
+		title: 'Personal Archive',
+		description: '일상에서 건진 장면, 문장, 작업 기록을 가볍게 쌓아둡니다.',
+	},
+	{
+		title: 'Study Notes',
+		description: 'AI, 개발, 디자인을 공부하면서 실제로 이해한 만큼만 적습니다.',
+	},
+	{
+		title: 'AI Video Lab',
+		description: '영상 생성, 편집 실험, 프롬프트 테스트를 기록하는 작은 실험실입니다.',
+	},
+];
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout
+	title="jungsu blog | Personal Archive"
+	description="개인 기록실, 공부 로그, 프로젝트 쇼룸, AI 영상 실험실을 모아둔 블로그."
+	wide
+>
+	<div class="jungsu-page">
+		<section class="jungsu-hero" aria-labelledby="home-title">
+			<div class="jungsu-hero__image" aria-hidden="true">
+				<img
+					src="/images/enoshima-train-original.jpg"
+					alt=""
+					loading="eager"
+					decoding="async"
+				/>
+			</div>
+			<div class="jungsu-hero__inner">
+				<div class="jungsu-copy">
+					<p class="jungsu-eyebrow jungsu-reveal" style="--delay: 0ms">
+						Private archive / study log / project room
+					</p>
+					<h1 id="home-title" class="jungsu-reveal" style="--delay: 90ms">
+						JUNGSU BLOG
+					</h1>
+					<p class="jungsu-copy__lede jungsu-reveal" style="--delay: 180ms">
+						개인 기록실, 공부 로그, 프로젝트 쇼룸, AI 영상 실험실을 한곳에 모았습니다.
+						거창한 포트폴리오보다 자주 꺼내 보는 작업 노트에 가깝게 운영합니다.
+					</p>
+					<div class="jungsu-actions jungsu-reveal" style="--delay: 270ms">
+						<a class="button button--primary" href="/daily/">Read Daily</a>
+						<a class="button button--secondary" href="/projects/">View Projects</a>
+					</div>
+					<ul class="jungsu-quick jungsu-reveal" style="--delay: 360ms">
+						{
+							quickLinks.map(([title, description, href]) => (
+								<li>
+									<a href={href}>
+										<span>{title}</span>
+										<strong>{description}</strong>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+
+				<aside class="jungsu-note-card jungsu-reveal" style="--delay: 430ms">
+					<p class="jungsu-card__label">Current mood</p>
+					<div class="jungsu-clock" aria-label="evening note time">
+						<time data-korea-clock datetime="">19:47</time>
+						<small>KST live</small>
+					</div>
+					<h2>Train by the sea, notes after work.</h2>
+					<p>
+						좋아하는 장면을 메인에 걸어두고, 매일의 공부와 실험을 너무 무겁지 않게
+						기록합니다.
+					</p>
+					<div class="jungsu-note-card__meta">
+						<strong>2026</strong>
+						<span>personal log</span>
+					</div>
+				</aside>
+			</div>
+		</section>
+
+		<section class="jungsu-next" aria-labelledby="rooms-title">
+			<div class="jungsu-next__inner">
+				<div>
+					<p class="jungsu-eyebrow">Rooms</p>
+					<h2 id="rooms-title">A blog with rooms, not categories.</h2>
+					<p>
+						영어 제목은 방향을 잡고, 한글 설명은 실제 쓰임을 말합니다. 읽는 사람이
+						둘러보다가 필요한 방으로 바로 들어갈 수 있게 구성했습니다.
+					</p>
+				</div>
+				<ul class="jungsu-feature-list">
+					{
+						featureCards.map((feature) => (
+							<li>
+								<strong>{feature.title}</strong>
+								<p>{feature.description}</p>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+	</div>
+	<script>
+		const clock = document.querySelector('[data-korea-clock]');
+		const formatter = new Intl.DateTimeFormat('ko-KR', {
+			hour: '2-digit',
+			minute: '2-digit',
+			hour12: false,
+			timeZone: 'Asia/Seoul',
+		});
+
+		function updateKoreaClock() {
+			if (!(clock instanceof HTMLTimeElement)) return;
+			const now = new Date();
+			clock.dateTime = now.toISOString();
+			clock.textContent = formatter.format(now);
+		}
+
+		updateKoreaClock();
+		window.setInterval(updateKoreaClock, 1000);
+	</script>
+</BaseLayout>

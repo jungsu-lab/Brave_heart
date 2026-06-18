@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(firstPost, secondPost) => secondPost.data.date.valueOf() - firstPost.data.date.valueOf(),
+);
+---
+
+<BaseLayout
+	title="jungsu blog | 데일리"
+	description="일상 기록과 작업 중간 메모를 모아둔 Daily 페이지."
+>
+	<section class="hero">
+		<p class="eyebrow">데일리</p>
+		<h1>개인 기록.</h1>
+		<p>하루를 지나며 남긴 생각, 작업 중간의 메모, 다시 보고 싶은 장면을 모아둡니다.</p>
+	</section>
+
+	<section class="page-section" aria-labelledby="daily-log">
+		<div class="section-heading">
+			<h2 id="daily-log">데일리 기록</h2>
+			<a href="/blog/">전체 기록</a>
+		</div>
+		<ul class="card-grid">
+			{
+				posts.map((post) => (
+					<li>
+						<a class="content-card" href={`/blog/${post.id}/`}>
+							<h3>{post.data.title}</h3>
+							<p>{post.data.description}</p>
+							<p class="meta">
+								<time datetime={post.data.date.toISOString()}>
+									{post.data.date.toLocaleDateString('ko-KR', {
+										month: 'long',
+										day: 'numeric',
+										year: 'numeric',
+									})}
+								</time>
+								{' · '}
+								{post.data.tags.join(', ')}
+							</p>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+</BaseLayout>

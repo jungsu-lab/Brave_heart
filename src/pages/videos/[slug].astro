@@ -1,0 +1,49 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+type Props = {
+	readonly video: CollectionEntry<'videos'>;
+};
+
+export async function getStaticPaths() {
+	const videos = await getCollection('videos');
+
+	return videos.map((video) => ({
+		params: { slug: video.id },
+		props: { video },
+	}));
+}
+
+const { video } = Astro.props;
+const { Content } = await render(video);
+---
+
+<BaseLayout title={`jungsu blog | ${video.data.title}`} description={video.data.description}>
+	<article>
+		<header>
+			<p class="eyebrow">영상 기록</p>
+			<h1>{video.data.title}</h1>
+			<p class="lede">{video.data.description}</p>
+				<p class="meta">
+					<time datetime={video.data.date.toISOString()}>
+						{video.data.date.toLocaleDateString('ko-KR', {
+							month: 'long',
+							day: 'numeric',
+							year: 'numeric',
+						})}
+					</time>
+				{' · '}
+				{video.data.platform}
+				{' · '}
+				{video.data.duration}
+				</p>
+			<p class="tags-line">태그: {video.data.tags.join(', ')}</p>
+			<p class="tags-line">
+				<a href={video.data.videoUrl}>영상 보기</a>
+			</p>
+		</header>
+		<Content />
+	</article>
+</BaseLayout>

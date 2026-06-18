@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const videos = (await getCollection('videos')).sort(
+	(firstVideo, secondVideo) => secondVideo.data.date.valueOf() - firstVideo.data.date.valueOf(),
+);
+---
+
+<BaseLayout title="jungsu blog | AI 영상">
+	<section class="hero">
+		<p class="eyebrow">AI 영상</p>
+		<h1>AI 영상 실험실.</h1>
+		<p>AI 영상 생성, 편집 실험, 프롬프트 테스트를 기록하는 실험실입니다.</p>
+	</section>
+
+	<section class="page-section">
+		<div class="section-heading">
+			<h2>실험 기록</h2>
+		</div>
+		<ul class="card-grid">
+			{
+				videos.map((video) => (
+					<li>
+						<a class="content-card" href={`/videos/${video.id}/`}>
+							<h3>{video.data.title}</h3>
+							<p>{video.data.description}</p>
+							<p class="meta">
+								<time datetime={video.data.date.toISOString()}>
+									{video.data.date.toLocaleDateString('ko-KR', {
+										month: 'long',
+										day: 'numeric',
+										year: 'numeric',
+									})}
+								</time>
+								{' · '}
+								{video.data.platform}
+								{' · '}
+								{video.data.duration}
+							</p>
+							<p class="tags-line">{video.data.tags.join(', ')}</p>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+</BaseLayout>

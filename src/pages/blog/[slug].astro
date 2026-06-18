@@ -1,0 +1,113 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+type Props = {
+	readonly post: CollectionEntry<'blog'>;
+};
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const allPosts = await getCollection('blog');
+const relatedPosts = allPosts
+	.filter(
+		(candidate) =>
+			candidate.id !== post.id &&
+			candidate.data.tags.some((tag) => post.data.tags.includes(tag)),
+	)
+	.sort(
+		(firstPost, secondPost) => secondPost.data.date.valueOf() - firstPost.data.date.valueOf(),
+	)
+	.slice(0, 2);
+---
+
+<BaseLayout title={`jungsu blog | ${post.data.title}`} description={post.data.description}>
+	<div class="article-layout">
+		<article class="article-body">
+			<a class="back-link" href="/daily/">← 데일리로 돌아가기</a>
+			<header>
+				<p class="eyebrow">기록</p>
+				<h1>{post.data.title}</h1>
+				<p class="lede">{post.data.description}</p>
+			</header>
+			<Content />
+			{
+				relatedPosts.length > 0 && (
+				<footer class="article-footer">
+					<p class="kicker">다음 글</p>
+					<h2>이어 읽기</h2>
+					<ul class="related-list">
+							{relatedPosts.map((relatedPost) => (
+								<li>
+									<a class="content-card" href={`/blog/${relatedPost.id}/`}>
+										<h3>{relatedPost.data.title}</h3>
+										<p>{relatedPost.data.description}</p>
+									</a>
+								</li>
+							))}
+						</ul>
+					</footer>
+				)
+			}
+		</article>
+		<aside class="article-rail" aria-label="글 정보">
+			<section>
+				<p class="kicker">정보</p>
+				<dl>
+					<div>
+						<dt>발행일</dt>
+						<dd>
+							<time datetime={post.data.date.toISOString()}>
+								{post.data.date.toLocaleDateString('ko-KR', {
+									month: 'long',
+									day: 'numeric',
+									year: 'numeric',
+								})}
+							</time>
+						</dd>
+					</div>
+					<div>
+						<dt>작성자</dt>
+						<dd>{post.data.author}</dd>
+					</div>
+					<div>
+						<dt>읽는 시간</dt>
+						<dd>{post.data.readingTime}</dd>
+					</div>
+				</dl>
+			</section>
+			<section>
+				<p class="kicker">태그</p>
+				<ul class="tag-cloud">
+					{post.data.tags.map((tag) => <li>{tag}</li>)}
+				</ul>
+			</section>
+			{
+				headings.length > 0 && (
+					<section>
+						<p class="kicker">목차</p>
+						<nav aria-label="글 목차">
+							<ul class="toc-list">
+								{headings.map((heading) => (
+									<li>
+										<a href={`#${heading.slug}`}>{heading.text}</a>
+									</li>
+								))}
+							</ul>
+						</nav>
+					</section>
+				)
+			}
+		</aside>
+	</div>
+</BaseLayout>

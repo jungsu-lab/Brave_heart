@@ -1,0 +1,60 @@
+.jungsu-next {
+	border-radius: 40px 40px 0 0;
+	padding: 4.5rem 0;
+	background: var(--bg-raised);
+}
+
+.jungsu-next__inner {
+	display: grid;
+	grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+	gap: 3rem;
+	width: min(100% - 8rem, 86rem);
+	margin: 0 auto;
+}
+
+.jungsu-next h2 {
+	margin: 0;
+	font-family: var(--title-font);
+	font-size: 4rem;
+	line-height: 0.95;
+}
+
+.jungsu-next h2 + p {
+	margin-top: 1rem;
+}
+
+.jungsu-feature-list {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.jungsu-feature-list strong {
+	display: block;
+	margin-bottom: 0.55rem;
+	font-family: var(--title-font);
+}
+
+@media (max-width: 980px) {
+	.jungsu-next__inner {
+		grid-template-columns: 1fr;
+		width: min(100% - 2rem, 86rem);
+	}
+
+	.jungsu-feature-list {
+		grid-template-columns: 1fr;
+	}
+
+	.jungsu-next h2 {
+		font-size: 3.2rem;
+	}
+}
+
+@media (max-width: 620px) {
+	.jungsu-next h2 {
+		font-size: 2.6rem;
+	}
+}

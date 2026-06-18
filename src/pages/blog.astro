@@ -1,0 +1,83 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(firstPost, secondPost) => secondPost.data.date.valueOf() - firstPost.data.date.valueOf(),
+);
+const featuredPost = posts.at(0);
+const archivePosts = posts.slice(1);
+const tagCounts = Array.from(new Set(posts.flatMap((post) => post.data.tags))).map((tag) => ({
+	tag,
+	count: posts.filter((post) => post.data.tags.includes(tag)).length,
+}));
+---
+
+<BaseLayout title="jungsu blog | 전체 기록">
+	<section class="hero">
+		<p class="eyebrow">전체 기록</p>
+		<h1>모든 기록.</h1>
+		<p>데일리와 공부 기록에 흩어진 글을 한 번에 훑어볼 수 있는 전체 기록실입니다.</p>
+	</section>
+
+	{
+		featuredPost && (
+			<section class="page-section split-layout" aria-labelledby="latest-note">
+				<div>
+					<div class="section-heading">
+						<h2 id="latest-note">최근 기록</h2>
+					</div>
+					<a class="featured-card" href={`/blog/${featuredPost.id}/`}>
+						<p class="kicker">최근 글</p>
+						<h3>{featuredPost.data.title}</h3>
+						<p class="lede">{featuredPost.data.description}</p>
+						<p class="meta">
+							<time datetime={featuredPost.data.date.toISOString()}>
+								{featuredPost.data.date.toLocaleDateString('ko-KR', {
+									month: 'long',
+									day: 'numeric',
+									year: 'numeric',
+								})}
+							</time>
+							{' · '}
+							{featuredPost.data.readingTime}
+						</p>
+					</a>
+				</div>
+				<aside class="note-panel" aria-label="태그 목록">
+					<p class="kicker">분류</p>
+					<h2>태그</h2>
+					<ul class="tag-cloud">
+						{tagCounts.map(({ tag, count }) => <li>{tag} {count}</li>)}
+					</ul>
+				</aside>
+			</section>
+		)
+	}
+
+	<section class="page-section" aria-labelledby="archive">
+		<div class="section-heading">
+			<h2 id="archive">기록 목록</h2>
+		</div>
+		<ul class="archive-list">
+			{
+				archivePosts.map((post) => (
+					<li class="archive-item">
+						<time datetime={post.data.date.toISOString()}>
+							{post.data.date.toLocaleDateString('ko-KR', {
+								month: 'long',
+								day: 'numeric',
+								year: 'numeric',
+							})}
+						</time>
+						<div>
+							<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+							<p>{post.data.description}</p>
+							<span>{post.data.tags.join(' / ')}</span>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+</BaseLayout>

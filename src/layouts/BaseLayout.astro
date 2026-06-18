@@ -1,0 +1,77 @@
+---
+import '../styles/global.css';
+
+const {
+	title = 'jungsu blog',
+	description = '개인 기록실, 공부 로그, 프로젝트 쇼룸, AI 영상 실험실을 모아둔 jungsu blog.',
+	wide = false,
+} = Astro.props;
+
+const navItems = [
+	{ href: '/', label: 'Home' },
+	{ href: '/daily/', label: 'Daily' },
+	{ href: '/study/', label: 'Study' },
+	{ href: '/projects/', label: 'Projects' },
+	{ href: '/videos/', label: 'AI Videos' },
+	{ href: '/about/', label: 'About' },
+];
+
+const currentPath = Astro.url.pathname;
+const githubUrl = 'https://github.com/jungsu-lab/Brave_heart';
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content={description} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="site-header__inner site-shell">
+				<a class="brand" href="/" aria-label="jungsu blog home">jungsu blog</a>
+				<nav class="site-nav" aria-label="Primary navigation">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.href}
+								aria-current={
+									item.href.startsWith('http')
+										? undefined
+										: currentPath === item.href ||
+									(item.href !== '/' && currentPath.startsWith(item.href))
+										? 'page'
+										: undefined
+								}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<div class="site-actions" aria-label="Quick links">
+					<a class="nav-cta" href={githubUrl} target="_blank" rel="noreferrer">GitHub</a>
+				</div>
+			</div>
+		</header>
+		<main class:list={['site-main', wide ? 'site-main--wide' : 'site-shell']}>
+			<slot />
+		</main>
+		<footer class="site-footer">
+			<div class="site-footer__inner site-shell">
+				<p>jungsu blog. 기록하고, 공부하고, 만들어보는 공간.</p>
+				<div class="footer-links">
+					<a href="/daily/">Daily</a>
+					<a href="/study/">Study</a>
+					<a href={githubUrl} target="_blank" rel="noreferrer">GitHub</a>
+					<a href="/rss.xml">RSS</a>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>
